@@ -73,14 +73,18 @@ public class TournoisPouleController implements ITournoisController {
 		return equipes;
 	}
 
-	public TournoisDirect finMatch(TournoisPoule tournois, Poule poule, Match match, Equipe equipe1, Equipe equipe2, int score1, int score2){
-		match.setScore(equipe1, score1, equipe2, score2);
+	public TournoisDirect finMatch(TournoisPoule tournois, Poule poule, Match match, int score1, int score2){
+		match.setScore(score1, score2);
+		Equipe[] equipes = match.getEquipes();
+		Equipe equipe1 = equipes[0];
+		Equipe equipe2 = equipes[1];
 		ArrayList<ResultatsEquipe> classement = poule.getClassement();
 		ResultatsEquipe res1 = null, res2 = null;
-		
+
 		Iterator<ResultatsEquipe> it = classement.iterator();
 		while(it.hasNext()){
 			ResultatsEquipe res = (ResultatsEquipe) it.next();
+
 			if(res.getEquipe().equals(equipe1)){
 				res1= res;
 			}

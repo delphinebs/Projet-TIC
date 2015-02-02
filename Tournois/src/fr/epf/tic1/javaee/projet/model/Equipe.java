@@ -30,8 +30,7 @@ public class Equipe {
 	}
 
 	@Override
-	public String toString() {
-		
+	public String toString() {	
 		return nom;
 	}
 }

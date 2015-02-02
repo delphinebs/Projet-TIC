@@ -1,7 +1,5 @@
 package fr.epf.tic1.javaee.projet.model;
 
-import fr.epf.tic1.javaee.projet.execptions.MauvaisesEquipesScoreExecption;
-
 public class Match {
 
 	//private HashMap<Equipe, Integer> scores;//Attention!!! => verif pas deux equipes identiques (Execption si deux equipes identiques?)	
@@ -50,15 +48,10 @@ public class Match {
 		return scores;
 	}
 	
-	public void setScore(Equipe equipe1, int score1,Equipe equipe2, int score2){
-		try{
-			if(!equipe1.equals(equipes[0]) || !equipe2.equals(equipes[1])) throw new MauvaisesEquipesScoreExecption();
+	public void setScore(int score1, int score2){
 			scores[0]=score1;
 			scores[1]=score2;	
 			joue=true;
-		}catch(MauvaisesEquipesScoreExecption mese){
-			System.out.println("Erreur: les equipes indiquees pour le score ne correspondent pas!!");
-		}
 	}
 	
 	@Override

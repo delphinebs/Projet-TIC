@@ -7,8 +7,20 @@ public class ResultatsEquipe implements Comparable<ResultatsEquipe>{
 	private int differenceDeButs;
 	
 	public ResultatsEquipe(Equipe equipe) {
+		this.equipe = equipe;
 		points=0;
 		differenceDeButs=0;
+	}
+	
+	@Override
+	public String toString() {
+		
+		String retour;
+		
+		retour = "Equipe "+equipe+": ";
+		retour += points+" Points";
+		retour += ", Difference: "+differenceDeButs;
+		return retour;
 	}
 
 	//Utiliser pour pouvoir sort() les resultats des equipes dan une poule

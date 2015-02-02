@@ -97,8 +97,8 @@ public class TournoisDirectController implements ITournoisController {
 	}
 
 	//Utiliser le boolean pour savoir si le tournois est finis et si il faut appeler fin(tournois)
-	public boolean finMatch(TournoisDirect tournois,Match match, Equipe equipe1, Equipe equipe2, int score1, int score2){
-		match.setScore(equipe1, score1, equipe2, score2);//Verif si score=score => impossible
+	public boolean finMatch(TournoisDirect tournois,Match match, int score1, int score2){
+		match.setScore(score1,score2);//Verif si score=score => impossible
 		ArrayList<Match[]> arbre = tournois.getArbre();
 		
 		if(finTour(arbre, tournois.getTour())){
@@ -115,7 +115,7 @@ public class TournoisDirectController implements ITournoisController {
 	}
 	
 	public boolean finDeTournois(TournoisDirect tournois){
-		if(tournois.getArbre().size()>=tournois.getTour()+1) return true;
+		if(tournois.getArbre().size()<=tournois.getTour()+1) return true;
 		return false;
 	}
 	
@@ -168,12 +168,14 @@ public class TournoisDirectController implements ITournoisController {
 
 	public void mettreAdroite(Equipe equipe, Match[] matchs){
 		for(int i=matchs.length-1 ; i>=0 ; i--){
+			if(matchs[i]==null) matchs[i] = new Match();
 			if(matchs[i].setEquipes(equipe)) return;
 		}
 	}
 	
 	public void mettreAgauche(Equipe equipe, Match[] matchs){
 		for(int i=0 ; i<matchs.length ; i++){
+			if(matchs[i]==null) matchs[i] = new Match();
 			if(matchs[i].setEquipes(equipe)) return;
 		}
 	}
