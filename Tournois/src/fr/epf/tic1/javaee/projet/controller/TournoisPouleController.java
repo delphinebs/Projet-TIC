@@ -9,9 +9,6 @@ import fr.epf.tic1.javaee.projet.model.*;
 
 public class TournoisPouleController implements ITournoisController {
 
-	public TournoisPouleController(){
-		
-	}
 	
 	@Override
 	public void start(ATournois tournois) {
@@ -46,7 +43,7 @@ public class TournoisPouleController implements ITournoisController {
 		}
 	}
 
-	public static ArrayList<Equipe> creerPoulesCompletes(TournoisPoule tournoisPoule) {
+	private static ArrayList<Equipe> creerPoulesCompletes(TournoisPoule tournoisPoule) {
 		
 		ArrayList<Equipe> equipes = tournoisPoule.getEquipes();
 		int nbEquipe = equipes.size();
@@ -126,19 +123,19 @@ public class TournoisPouleController implements ITournoisController {
 		return null;//Verif si phase final avec ==null
 	}
 	
-	public TournoisDirect phaseFinal(ArrayList<Equipe> qualifies, String nom){
+	private TournoisDirect phaseFinal(ArrayList<Equipe> qualifies, String nom){
 		TournoisDirect tournois = new TournoisDirect("Phase final "+nom, qualifies);
 		return tournois;
 	}
 	
-	public boolean dernierMatch(Poule poule){
+	private boolean dernierMatch(Poule poule){
 		for(Match match : poule.getMatchs()){
 			if(!match.getJoue()) return false;
 		}
 		return true;
 	}
 	
-	public boolean dernierePoule(ArrayList<Poule> poules){
+	private boolean dernierePoule(ArrayList<Poule> poules){
 		for(Poule poule : poules){
 			if(!dernierMatch(poule)) return false;
 		}

@@ -8,6 +8,10 @@ public class Equipe {
 		nom = "default";
 	}
 	
+	public Equipe(String nom){
+		this.nom = nom;
+	}
+	
 	public String getNom() {
 		return nom;
 	}
@@ -16,9 +20,7 @@ public class Equipe {
 		this.nom = nom;
 	}
 
-	public Equipe(String nom){
-		this.nom = nom;
-	}
+
 	
 	@Override
 	public boolean equals(Object obj) {

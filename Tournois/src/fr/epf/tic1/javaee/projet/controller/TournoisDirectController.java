@@ -16,7 +16,7 @@ public class TournoisDirectController implements ITournoisController {
 		creerArbre(tournoisDirect);
 	}
 
-	public void creerArbre(TournoisDirect tournois) {
+	private void creerArbre(TournoisDirect tournois) {
 		ArrayList<Equipe> equipes = tournois.getEquipes();
 		ArrayList<Match[]> arbre = tournois.getArbre();
 
@@ -114,19 +114,19 @@ public class TournoisDirectController implements ITournoisController {
 		//TODO fin de partie ou pas, necessaire?
 	}
 	
-	public boolean finDeTournois(TournoisDirect tournois){
+	private boolean finDeTournois(TournoisDirect tournois){
 		if(tournois.getArbre().size()<=tournois.getTour()+1) return true;
 		return false;
 	}
 	
-	public boolean finTour(ArrayList<Match[]> arbre, int tour){
+	private boolean finTour(ArrayList<Match[]> arbre, int tour){
 		for(Match match : arbre.get(tour)){
 			if(!match.getJoue()) return false;
 		}
 		return true;
 	}
 	
-	public void monterEquipes(ArrayList<Match[]> arbre, int tour){
+	private void monterEquipes(ArrayList<Match[]> arbre, int tour){
 		Match[] matchsCourants = arbre.get(tour);
 		Match[] matchsSuivants = arbre.get(tour+1);
 		
@@ -144,7 +144,7 @@ public class TournoisDirectController implements ITournoisController {
 		}
 	}
 	
-	public Equipe quiGagne(Match match){
+	private Equipe quiGagne(Match match){
 		
 		Equipe[] equipes = match.getEquipes();
 		if(equipes[0].getNom().equals("default")){
@@ -166,14 +166,14 @@ public class TournoisDirectController implements ITournoisController {
 		return equipes[0];//execption??
 	}
 
-	public void mettreAdroite(Equipe equipe, Match[] matchs){
+	private void mettreAdroite(Equipe equipe, Match[] matchs){
 		for(int i=matchs.length-1 ; i>=0 ; i--){
 			if(matchs[i]==null) matchs[i] = new Match();
 			if(matchs[i].setEquipes(equipe)) return;
 		}
 	}
 	
-	public void mettreAgauche(Equipe equipe, Match[] matchs){
+	private void mettreAgauche(Equipe equipe, Match[] matchs){
 		for(int i=0 ; i<matchs.length ; i++){
 			if(matchs[i]==null) matchs[i] = new Match();
 			if(matchs[i].setEquipes(equipe)) return;
