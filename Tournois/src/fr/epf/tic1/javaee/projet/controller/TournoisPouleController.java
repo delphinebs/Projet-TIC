@@ -107,25 +107,35 @@ public class TournoisPouleController implements ITournoisController {
 			res2.setDifferenceDeButs(res2.getDifferenceDeButs()+dif);
 		}
 		
+		Collections.sort(classement);
+		
 		if(dernierMatch(poule)){
-			ArrayList<Equipe> qualifies = tournois.getQualifiés();
-			Collections.sort(classement);
-			qualifies.add(classement.get(classement.size()-1).getEquipe());
-			qualifies.add(classement.get(classement.size()-2).getEquipe());
-			
+
 			ArrayList<Poule> poules = tournois.getPoules();
 			
 			if(dernierePoule(poules)){
-				return phaseFinal(qualifies, tournois.getNom());
+				return phaseFinal(tournois);
 			}
 		}
 		
 		return null;//Verif si phase final avec ==null
 	}
 	
-	private TournoisDirect phaseFinal(ArrayList<Equipe> qualifies, String nom){
-		TournoisDirect tournois = new TournoisDirect("Phase final "+nom, qualifies);
-		return tournois;
+	private TournoisDirect phaseFinal(TournoisPoule tournois){
+		
+		ArrayList<Equipe> qualifies = tournois.getQualifiés();
+		ArrayList<Poule> poules = tournois.getPoules();
+		ArrayList<ResultatsEquipe> classement;
+		
+		for(Poule poule : poules){
+			classement = poule.getClassement();
+			Collections.sort(classement);
+			qualifies.add(classement.get(classement.size()-1).getEquipe());
+			qualifies.add(classement.get(classement.size()-2).getEquipe());
+		
+		}
+		TournoisDirect tournoisDirect = new TournoisDirect("Phase final "+tournois.getNom(), qualifies);
+		return tournoisDirect;
 	}
 	
 	private boolean dernierMatch(Poule poule){

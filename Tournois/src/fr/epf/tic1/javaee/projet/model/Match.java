@@ -56,7 +56,10 @@ public class Match {
 	
 	@Override
 	public String toString() {
-		if(joue) return equipes[0]+" "+scores[0]+"-"+scores[1]+" "+equipes[1];
+		if(joue){
+			if(scores[0]==-1) return equipes[0]+"";
+			else return equipes[0]+" "+scores[0]+"-"+scores[1]+" "+equipes[1];
+		}
 		else return equipes[0]+" - "+equipes[1] + " (a jouer)";
 	}
 	

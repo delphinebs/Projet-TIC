@@ -71,6 +71,8 @@ public class Poule {
 			retour += "   "+match+"\n";
 		}
 		
+		System.out.println(classement);
+		
 		
 		return retour;
 	}

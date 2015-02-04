@@ -61,6 +61,7 @@ public class TournoisDirectController implements ITournoisController {
 				else equipes.remove(index2);
 			}
 			matchs[(int) nbEquipe / 2] = new Match(equipes.get(0), new Equipe());
+			matchs[(int) nbEquipe / 2].setScore(-1, -1);
 			arbre.add(matchs);
 			break;
 		}
@@ -135,16 +136,24 @@ public class TournoisDirectController implements ITournoisController {
 			for(int i=matchsCourants.length-1 ; i>=0 ; i--){
 				mettreAdroite(quiGagne(matchsCourants[i]), matchsSuivants);
 			}
+			setDefaultScore(matchsSuivants[0]);
 			break;
 		case 1:
 			for(int i=0 ; i<matchsCourants.length ; i++){
 				mettreAgauche(quiGagne(matchsCourants[i]), matchsSuivants);
 			}
+			setDefaultScore(matchsSuivants[matchsSuivants.length-1]);
 			break;
 		}
 	}
 	
-	private Equipe quiGagne(Match match){
+	private void setDefaultScore(Match match){
+		if(match.getEquipes()[0].getNom().equals("default") || match.getEquipes()[1].getNom().equals("default")){
+			match.setScore(-2, -2);
+		}
+	}
+	
+ 	private Equipe quiGagne(Match match){
 		
 		Equipe[] equipes = match.getEquipes();
 		if(equipes[0].getNom().equals("default")){

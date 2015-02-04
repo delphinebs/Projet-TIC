@@ -16,20 +16,19 @@ public class Main {
 			tournois = new TournoisPoule();
 			tournois.setNom(console.choixNom("tournois"));
 			tournois.setEquipes(console.donnerEquipes());
-			TournoisPouleController controllerPoule = new TournoisPouleController();
-			controllerPoule.start(tournois);
+			console.menuEnCoursGeneral(tournois);
 			break;
 		case 2:
 			tournois = new TournoisDirect();
 			tournois.setNom(console.choixNom("tournois"));
 			tournois.setEquipes(console.donnerEquipes());
-			TournoisDirectController controllerDirect = new TournoisDirectController();
-			controllerDirect.start(tournois);
+			console.menuEnCoursGeneral(tournois);
 			break;
 		case 0:
-			return;
+			System.exit(0);
 		}
 		
+		main(new String[1]);
 		
 	}
 
