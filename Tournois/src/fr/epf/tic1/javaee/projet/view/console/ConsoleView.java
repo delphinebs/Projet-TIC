@@ -9,7 +9,7 @@ import fr.epf.tic1.javaee.projet.controller.TournoisPouleController;
 import fr.epf.tic1.javaee.projet.model.*;
 
 public class ConsoleView {
-
+	
 	public int choixTournois() {
 
 		System.out.println("----Choix du tournois----");
@@ -28,10 +28,13 @@ public class ConsoleView {
 				commande = sc.nextInt();
 				valide = true;
 			} catch (InputMismatchException ime) {
+				sc.close();
 				return choixTournois();
 			}
 		}
 
+		sc.close();
+		
 		switch (commande) {
 		case 1:
 			return 1;
@@ -53,6 +56,7 @@ public class ConsoleView {
 		Scanner sc = new Scanner(System.in);
 		String nom;
 		nom = sc.nextLine();
+		sc.close();
 
 		switch (validerNom(nom)) {
 		case 1:
@@ -74,7 +78,8 @@ public class ConsoleView {
 		Scanner sc = new Scanner(System.in);
 		int commande = 0;
 		boolean valide = false;
-
+		sc.close();
+		
 		while (!valide) {
 			try {
 				commande = sc.nextInt();
@@ -245,10 +250,12 @@ public class ConsoleView {
 				commande = sc.nextInt();
 				valide = true;
 			} catch (InputMismatchException ime) {
+				sc.close();
 				return donnerScore(equipe);
 			}
 		}
-
+		sc.close();
+		
 		if (commande < 0)
 			return donnerScore(equipe);
 
@@ -271,10 +278,12 @@ public class ConsoleView {
 				commande = sc.nextInt();
 				valide = true;
 			} catch (InputMismatchException ime) {
+				sc.close();
 				return choixMatch(matchs);
 			}
 		}
 
+		sc.close();
 		if (commande <= 0 || commande > matchs.size())
 			return choixMatch(matchs);
 
@@ -282,8 +291,11 @@ public class ConsoleView {
 	}
 
 	private Match choixMatch(Match[] matchs) {
+		ArrayList<Integer> forbidden = new ArrayList<>();
+		
 		for (int i = 0; i < matchs.length; i++) {
 			if(matchs[i].getScore()[0]!=-2) System.out.println((i + 1) + ". " + matchs[i]);
+			else forbidden.add(i);
 		}
 		System.out.println("Entrez le numero du match selectionnee:");
 
@@ -296,11 +308,13 @@ public class ConsoleView {
 				commande = sc.nextInt();
 				valide = true;
 			} catch (InputMismatchException ime) {
+				sc.close();
 				return choixMatch(matchs);
 			}
 		}
+		sc.close();
 
-		if (commande <= 0 || commande > matchs.length)
+		if (commande <= 0 || commande > matchs.length || forbidden.contains(commande-1))
 			return choixMatch(matchs);
 
 		return matchs[commande-1];
@@ -322,13 +336,15 @@ public class ConsoleView {
 				commande = sc.nextInt();
 				valide = true;
 			} catch (InputMismatchException ime) {
+				sc.close();
 				return choixPoule(poules);
 			}
 		}
-
-		if (commande <= 0 || commande > poules.size())
+		sc.close();
+	
+		if (commande <= 0 || commande > poules.size()){
 			return choixPoule(poules);
-
+		}
 		return poules.get(commande-1);
 
 	}
@@ -352,10 +368,12 @@ public class ConsoleView {
 				commande = sc.nextInt();
 				valide = true;
 			} catch (InputMismatchException ime) {
+				sc.close();
 				return choixEquipe(equipes);
 			}
 		}
-
+		sc.close();
+		
 		if (commande <= 0 || commande > equipes.size())
 			return choixEquipe(equipes);
 
@@ -379,10 +397,12 @@ public class ConsoleView {
 				commande = sc.nextInt();
 				valide = true;
 			} catch (InputMismatchException ime) {
+				sc.close();
 				return actionDonnerEquipe();
 			}
 		}
-
+		sc.close();
+		
 		switch (commande) {
 		case 1:
 			return 1;
@@ -411,10 +431,12 @@ public class ConsoleView {
 				commande = sc.nextInt();
 				valide = true;
 			} catch (InputMismatchException ime) {
+				sc.close();
 				return actionDonnerEquipe();
 			}
 		}
-
+		sc.close();
+		
 		switch (commande) {
 		case 1:
 			return 1;

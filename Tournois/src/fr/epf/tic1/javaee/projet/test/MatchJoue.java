@@ -3,7 +3,6 @@ package fr.epf.tic1.javaee.projet.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.junit.Test;
 

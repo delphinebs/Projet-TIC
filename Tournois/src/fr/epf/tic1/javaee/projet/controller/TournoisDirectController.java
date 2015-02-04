@@ -61,7 +61,7 @@ public class TournoisDirectController implements ITournoisController {
 				else equipes.remove(index2);
 			}
 			matchs[(int) nbEquipe / 2] = new Match(equipes.get(0), new Equipe());
-			matchs[(int) nbEquipe / 2].setScore(-1, -1);
+			matchs[(int) nbEquipe / 2].setScore(-2, -2);
 			arbre.add(matchs);
 			break;
 		}
