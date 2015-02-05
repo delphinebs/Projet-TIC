@@ -19,10 +19,10 @@ public class AccueilController {
 	@FXML
 	public Label confirmLabel;
 	
-	
 	Stage stage = null;
 	
 	public void creerTournois() {
+		
 		if(typeTournoisCombo.valueProperty().isNull().get() ||  nomTournoisText.getText().equals("")){
 			confirmLabel.setVisible(true);
 		}

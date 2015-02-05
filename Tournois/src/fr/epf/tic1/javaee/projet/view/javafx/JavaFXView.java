@@ -27,9 +27,6 @@ public class JavaFXView extends Application {
 
         controller.setStage(primaryStage);
         primaryStage.show();   
-        
-		
-
 	}
 
 }
