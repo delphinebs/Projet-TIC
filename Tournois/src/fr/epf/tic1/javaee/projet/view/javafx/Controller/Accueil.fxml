@@ -5,12 +5,14 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
+<?import javafx.scene.control.Label?>
 
 <GridPane
-	fx:controller="fr.epf.tic1.javaee.projet.view.javafx.Controller.TestController"
+	fx:controller="fr.epf.tic1.javaee.projet.view.javafx.Controller.AccueilController"
 	xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
 	<Button GridPane.rowIndex="1" GridPane.columnIndex="1" text="Creer le tournois" onAction="#creerTournois"></Button>
 	<TextField GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Nom du tournois" fx:id="nomTournoisText"></TextField>
+	<Label GridPane.rowIndex="3" GridPane.columnIndex="1" Text="Remplir tous les champs" visible="false" fx:id="confirmLabel"></Label>
 	<ComboBox GridPane.rowIndex="2" GridPane.columnIndex="2" fx:id="typeTournoisCombo"
 		promptText="Type de Tournois">
 		<items>

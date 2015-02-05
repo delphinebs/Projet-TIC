@@ -1,20 +1,35 @@
 package fr.epf.tic1.javaee.projet.view.javafx;
 
+import fr.epf.tic1.javaee.projet.view.javafx.Controller.AccueilController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-
-public class JavaFXView extends Application{
+public class JavaFXView extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-			Parent root = FXMLLoader.load(getClass().getResource("Controller/Test.fxml"));
-		 	primaryStage.setTitle("Gestionnaire de tournois");
-			primaryStage.setScene(new Scene(root,400,400));
-			primaryStage.show();
+		final FXMLLoader loader = new FXMLLoader(getClass().getResource("Controller/Accueil.fxml"));
+		final Parent root = (Parent) loader.load();
+		final AccueilController controller = loader.<AccueilController> getController();
+
+		primaryStage.initStyle(StageStyle.DECORATED);
+        //primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
+        primaryStage.setTitle("Gestionnaire de tournois");
+
+        Scene scene = new Scene(root,800,400);
+        primaryStage.setScene(scene);
+        Platform.setImplicitExit(false);
+
+        controller.setStage(primaryStage);
+        primaryStage.show();   
+        
+		
+
 	}
-	
+
 }
