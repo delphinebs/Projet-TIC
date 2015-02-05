@@ -1,5 +1,8 @@
 package fr.epf.tic1.javaee.projet.view.javafx.Controller;
 
+import java.util.ArrayList;
+
+import fr.epf.tic1.javaee.projet.model.Equipe;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +14,7 @@ import javafx.stage.Stage;
 
 public class TournoisController {
 	@FXML
-	public Label nomEquipeLabel;
+	public Label nomTournoisLabel;
 	@FXML
 	public Label typeTournoisLabel;
 	@FXML
@@ -26,9 +29,9 @@ public class TournoisController {
 	Stage stage = null;
 
 	public void setInfo(String nom, String type) {
-		nomEquipeLabel.setText(nom);
+		nomTournoisLabel.setText(nom);
 		typeTournoisLabel.setText(type);
-		nomEquipeLabel.setFocusTraversable(true);
+		nomTournoisLabel.setFocusTraversable(true);
 	}
 
 	public void AjouterEquipe() {
@@ -43,7 +46,6 @@ public class TournoisController {
 			nomEquipeText.setText("");
 			int i = Integer.parseInt(compteurLabel.getText()) + 1;
 			compteurLabel.setText(String.valueOf(i));
-
 		}
 	}
 
@@ -79,6 +81,12 @@ public class TournoisController {
 					// /controller.setInfo(nomTournoisText.getText(),
 					// typeTournoisCombo.getValue());
 
+					ArrayList<Equipe> equipes = new ArrayList<>();
+					for(String nom : listEquipeCombo.getItems()){
+						equipes.add(new Equipe(nom));
+					}
+					controller.init(nomTournoisLabel.getText(), equipes);
+					
 					stage.show();
 
 					// Hide the current screen

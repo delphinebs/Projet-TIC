@@ -35,8 +35,7 @@ public class AccueilController {
 	    		
 	            //stage.initStyle(StageStyle.TRANSPARENT);
 	            //stage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
-	            stage.setScene(new Scene(root,800,400));
-	            
+	            stage.setScene(new Scene(root));
 	            controller.setInfo(nomTournoisText.getText(), typeTournoisCombo.getValue());
 
 	            controller.setStage(stage);

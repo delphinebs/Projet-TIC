@@ -69,10 +69,7 @@ public class Poule {
 		retour += "\n";
 		for(Match match : matchs){
 			retour += "   "+match+"\n";
-		}
-		
-		System.out.println(classement);
-		
+		}	
 		
 		return retour;
 	}

@@ -13,7 +13,7 @@
 	xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
 	
 	<GridPane GridPane.rowIndex="1" GridPane.columnIndex="1">
-		<Label GridPane.rowIndex="1" GridPane.columnIndex="1" fx:id="nomEquipeLabel"></Label>
+		<Label GridPane.rowIndex="1" GridPane.columnIndex="1" fx:id="nomTournoisLabel"></Label>
 		<Label GridPane.rowIndex="2" GridPane.columnIndex="1" fx:id="typeTournoisLabel"></Label>
 		<TextField GridPane.rowIndex="3" GridPane.columnIndex="1" promptText="Nom de l'equipe" fx:id="nomEquipeText"></TextField>
 		<GridPane GridPane.rowIndex="4" GridPane.columnIndex="1">

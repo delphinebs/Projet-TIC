@@ -45,7 +45,7 @@ public class TournoisPoule extends ATournois {
 	@Override
 	public String toString() {
 		String retour;
-		retour = "Ensemble des poules:\n"+poules.size();
+		retour = "Tournois: \n"+this.getNom();
 		for(Poule poule : poules){
 			retour +=  poule;
 		}
