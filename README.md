@@ -26,4 +26,4 @@ Projet JAVA - EPF TIC P2016
 	
 * Une batterie de test est implémenté à l'aide de __JUnit__.
 
-* Un __web service__ est également implémenté.
+* Un __web service__ est également implémenté (non présent sur GitHub).

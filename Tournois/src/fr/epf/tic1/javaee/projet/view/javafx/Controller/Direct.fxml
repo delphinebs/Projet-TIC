@@ -1,0 +1,77 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+
+
+<VBox
+	fx:controller="fr.epf.tic1.javaee.projet.view.javafx.Controller.DirectController"
+	xmlns:fx="http://javafx.com/fxml" id="vbox" prefHeight="400" prefWidth="800">
+	<MenuBar fx:id="menuBar">
+		<menus>
+			<Menu text="General">
+				<items>
+					<MenuItem text="Nouveau Tournois" onAction="#Recommencer"/>
+					<SeparatorMenuItem />
+					<MenuItem text="Exit" onAction="#Quitter"/>
+				</items>
+			</Menu>
+			<Menu text="Autre">
+				<items>
+					<MenuItem text="Gerer une equipe" onAction="#GererUneEquipe"/>
+					<MenuItem text="Gerer le tournois" onAction="#Gererletournois"/>
+				</items>
+			</Menu>
+		</menus>
+	</MenuBar>
+	<GridPane hgap="10" vgap="10">
+
+		<ComboBox GridPane.rowIndex="2" GridPane.columnIndex="1"
+			visible="false" promptText="Liste des equipes" fx:id="listEquipeCombo">
+		</ComboBox>
+		<Button GridPane.rowIndex="3" GridPane.columnIndex="1" visible="false"
+			text="Gérer cette equipe" fx:id="gererEquipeButton" onAction="#GererEquipe"></Button>
+		<Button GridPane.rowIndex="3" GridPane.columnIndex="2" visible="false"
+			text="Sauvegarder les modifications" fx:id="sauvModifButton"
+			onAction="#SauvModif"></Button>
+		<Button GridPane.rowIndex="4" GridPane.columnIndex="2" visible="false"
+			text="Voir les statistiques" fx:id="statsButton" onAction="#Stats"></Button>
+		<TextField GridPane.rowIndex="4" GridPane.columnIndex="1"
+			promptText="Nom de l'equipe" visible="false" fx:id="nomEquipeText"></TextField>
+		<TextField GridPane.rowIndex="5" GridPane.columnIndex="1"
+			promptText="nombre de joueurs" visible="false" fx:id="nbJoueursText"></TextField>
+		<TextField GridPane.rowIndex="6" GridPane.columnIndex="1"
+			promptText="Description" visible="false" fx:id="descriptionText"></TextField>
+
+
+		<ComboBox GridPane.rowIndex="2" GridPane.columnIndex="1"
+			visible="false" promptText="Liste des matchs" fx:id="listMatchCombo"
+			onAction="#SaisirScore">
+		</ComboBox>
+		<TextField GridPane.rowIndex="3" GridPane.columnIndex="1"
+			visible="false" fx:id="score1Text"></TextField>
+		<TextField GridPane.rowIndex="4" GridPane.columnIndex="1"
+			visible="false" fx:id="score2Text"></TextField>
+		<Button GridPane.rowIndex="5" GridPane.columnIndex="1" visible="false"
+			text="Valider" fx:id="validerButton" onAction="#ValiderScore"></Button>
+		<Label GridPane.rowIndex="6" GridPane.columnIndex="1"
+			text="Saissez les scores" visible="false" fx:id="scoreLabel"></Label>
+		<Label GridPane.rowIndex="6" GridPane.columnIndex="1"
+			text="Les scores doivent etre des chiffres" visible="false" fx:id="scoreTypeLabel"></Label>
+
+		<Label GridPane.rowIndex="2" GridPane.columnIndex="2"
+			fx:id="AffichageGlobalLabel"></Label>
+
+
+	</GridPane>
+</VBox>
