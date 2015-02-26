@@ -1,7 +1,6 @@
 package fr.epf.tic1.javaee.projet.view.console;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -41,25 +40,22 @@ public class ConsoleView {
 		}
 	}
 	
-
 	private void menuEnCoursGeneral(ATournois tournois) {
 
 		if (tournois instanceof TournoisDirect) {
-			TournoisDirectController controller = new TournoisDirectController();
-			controller.start(tournois);
-			menuDirect((TournoisDirect) tournois, controller);
+			TournoisDirectController controller = new TournoisDirectController((TournoisDirect)tournois);
+			controller.start();
+			menuDirect(controller);
 		} else {
-			TournoisPouleController controller = new TournoisPouleController();
-			controller.start(tournois);
-			TournoisDirect tournoisDirect = menuPoule((TournoisPoule) tournois,
-					controller);
+			TournoisPouleController controller = new TournoisPouleController((TournoisPoule)tournois);
+			controller.start();
+			TournoisDirect tournoisDirect = menuPoule(controller);
 			menuEnCoursGeneral(tournoisDirect);
 		}
 
 	}
 
-	private void menuDirect(TournoisDirect tournois,
-			TournoisDirectController controller) {
+	private void menuDirect(TournoisDirectController controller) {
 		boolean fin = false;
 
 		while (!fin) {
@@ -67,16 +63,16 @@ public class ConsoleView {
 			switch (actionTournois()) {
 			case 1:
 
-				if (finMatch(tournois, controller)) {
-					finDirect(tournois);
+				if (finMatch(controller)) {
+					finDirect(controller.getTournois());
 					fin = true;
 				}
 				break;
 			case 2:
-				System.out.println(tournois);
+				System.out.println(controller.getTournois());
 				break;
 			case 3:
-				gererEquipe(tournois.getEquipes(), tournois, null);
+				gererEquipe(controller.getTournois().getEquipes(), controller.getTournois(), null);
 				break;
 			case 4:
 				System.exit(0);// Quitter programmme
@@ -86,8 +82,7 @@ public class ConsoleView {
 
 	}
 
-	private TournoisDirect menuPoule(TournoisPoule tournois,
-			TournoisPouleController controller) {
+	private TournoisDirect menuPoule(TournoisPouleController controller) {
 
 		boolean fin = false;
 		TournoisDirect tournoisDirect = null;
@@ -96,17 +91,17 @@ public class ConsoleView {
 
 			switch (actionTournois()) {
 			case 1:
-				tournoisDirect = finMatch(tournois, controller);
+				tournoisDirect = finMatch(controller);
 				if (tournoisDirect != null) {
 					finPoule();
 					fin = true;
 				}
 				break;
 			case 2:
-				System.out.println(tournois);
+				System.out.println(controller.getTournois());
 				break;
 			case 3:
-				gererEquipe(tournois.getEquipes(), tournoisDirect, tournois);
+				gererEquipe(controller.getTournois().getEquipes(), tournoisDirect, controller.getTournois());
 				break;
 			case 4:
 				System.exit(0);// Quitter programmme
@@ -293,7 +288,6 @@ public class ConsoleView {
 
 		return equipes;
 	}
-
 	
 	private int validerNom(String nom) {
 		System.out.println("Valider le nom : \"" + nom + "\" ?");
@@ -319,7 +313,6 @@ public class ConsoleView {
 		}
 	}
 
-
 	private void finDirect(TournoisDirect tournois) {
 		System.out.println("Le tournois est fini");
 		System.out.println("L'equipe "+tournois.getGagnant()+" gagne le tournois!!");
@@ -330,25 +323,22 @@ public class ConsoleView {
 		System.out.println("La phase de poule est terminée!");
 	}
 
-	private TournoisDirect finMatch(TournoisPoule tournois,
-			TournoisPouleController controller) {
-		ArrayList<Poule> poules = tournois.getPoules();
+	private TournoisDirect finMatch(TournoisPouleController controller) {
+		ArrayList<Poule> poules = controller.getTournois().getPoules();
 		Poule poule = choixPoule(poules);
 		Match match = choixMatch(poule.getMatchs());
 		int[] scores = donnerScores(match);
-		return controller
-				.finMatch(tournois, poule, match, scores[0], scores[1]);
+		return controller.finMatch(poule, match, scores[0], scores[1]);
 	}
 
-	private boolean finMatch(TournoisDirect tournois,
-			TournoisDirectController controller) {
-		Match match = choixMatch(tournois.getArbre().get(tournois.getTour()));
+	private boolean finMatch(TournoisDirectController controller) {
+		Match match = choixMatch(controller.getTournois().getArbre().get(controller.getTournois().getTour()));
 		int[] scores = donnerScores(match);
 		while(scores[0]==scores[1]){
 			System.out.println("L'egalite est impossible en elimination directe");
 			scores = donnerScores(match);
 		}
-		return controller.finMatch(tournois, match, scores[0], scores[1]);
+		return controller.finMatch(match, scores[0], scores[1]);
 	}
 
 	

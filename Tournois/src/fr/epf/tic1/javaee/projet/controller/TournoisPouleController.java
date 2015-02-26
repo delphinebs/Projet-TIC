@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
 
-import fr.epf.tic1.javaee.projet.model.ATournois;
 import fr.epf.tic1.javaee.projet.model.Equipe;
 import fr.epf.tic1.javaee.projet.model.Match;
 import fr.epf.tic1.javaee.projet.model.Poule;
@@ -15,50 +14,56 @@ import fr.epf.tic1.javaee.projet.model.TournoisPoule;
 
 public class TournoisPouleController implements ITournoisController {
 
+	private TournoisPoule tournois;
+	
+	public TournoisPouleController(TournoisPoule tournois) {
+		this.tournois=tournois;
+	}
+	
+	public TournoisPoule getTournois() {
+		return tournois;
+	}
+	
 	@Override
-	public void start(ATournois tournois) {
-		TournoisPoule tournoisPoule = (TournoisPoule) tournois;
-
-		ArrayList<Equipe> equipes = tournoisPoule.getEquipes();
+	public void start() {
+		ArrayList<Equipe> equipes = tournois.getEquipes();
 
 		int nbEquipe = equipes.size();
 
 		// Cas nbEquipe==6 => avec nombre algorithme on aurait une poule de 6
 		// Il est preferable d'avoir 2 poules de 3
 		if (nbEquipe == 6) {
-			creerPoulesCompletesDe3(tournoisPoule);
+			creerPoulesCompletesDe3();
 		} else {
 
 			switch (nbEquipe % 4) {
 			case 0:// poules de 4
-				creerPoulesCompletes(tournoisPoule);
+				creerPoulesCompletes();
 				break;
 			case 1:
 			case 2:
 				// poules de 4 puis distribition des 1 ou 2 equipes restantes,
 				// Donc
 				// poules de 4 à 5 equipes
-				equipes = creerPoulesCompletes(tournoisPoule);
-				distribEquipes(tournoisPoule, equipes);
+				equipes = creerPoulesCompletes();
+				distribEquipes(equipes);
 				break;
 			case 3:
 				// poules de 4 et 1 poule de 3
-				equipes = creerPoulesCompletes(tournoisPoule);
+				equipes = creerPoulesCompletes();
 				Poule poule = new Poule(((int) nbEquipe / 4) + 1);
 				poule.setEquipes(equipes);
 				creerMatchs(poule);
-				ArrayList<Poule> poules = tournoisPoule.getPoules();
+				ArrayList<Poule> poules = tournois.getPoules();
 				poules.add(poule);
-				tournoisPoule.setPoules(poules);
+				tournois.setPoules(poules);
 				break;
 			}
 		}
 	}
 
 	// Gere l'entree d'un score et les consequences de la fin de ce match
-	@Override
-	public TournoisDirect finMatch(TournoisPoule tournois, Poule poule,
-			Match match, int score1, int score2) {
+	public TournoisDirect finMatch(Poule poule, Match match, int score1, int score2) {
 		match.setScore(score1, score2);
 		Equipe[] equipes = match.getEquipes();
 		Equipe equipe1 = equipes[0];
@@ -99,7 +104,7 @@ public class TournoisPouleController implements ITournoisController {
 			ArrayList<Poule> poules = tournois.getPoules();
 
 			if (dernierePoule(poules)) {
-				return phaseFinal(tournois);
+				return phaseFinal();
 			}
 		}
 
@@ -107,16 +112,15 @@ public class TournoisPouleController implements ITournoisController {
 	}
 
 	// Ditribu les equipes restantes dans les poules
-	private void distribEquipes(TournoisPoule tournoisPoule,
-			ArrayList<Equipe> equipes) {
+	private void distribEquipes(ArrayList<Equipe> equipes) {
 		for (int i = 0; i < equipes.size(); i++) {
-			tournoisPoule.getPoules().get(i).getEquipes().add(equipes.get(i));
-			tournoisPoule.getPoules().get(i).getMatchs().clear();
-			creerMatchs(tournoisPoule.getPoules().get(i));
+			tournois.getPoules().get(i).getEquipes().add(equipes.get(i));
+			tournois.getPoules().get(i).getMatchs().clear();
+			creerMatchs(tournois.getPoules().get(i));
 		}
 	}
 
-	// Foncions private car simplement utilisé en interne par le controleur
+	// Fonctions private car simplement utilisées en interne par le controleur
 	// Donc utilisation de fonction uniquement dans un but de clarete du code
 	//
 
@@ -141,10 +145,9 @@ public class TournoisPouleController implements ITournoisController {
 	}
 
 	// Cree des poules de 3
-	private ArrayList<Equipe> creerPoulesCompletesDe3(
-			TournoisPoule tournoisPoule) {
+	private ArrayList<Equipe> creerPoulesCompletesDe3() {
 
-		ArrayList<Equipe> equipes = tournoisPoule.getEquipes();
+		ArrayList<Equipe> equipes = tournois.getEquipes();
 		ArrayList<Equipe> equipesTampon = new ArrayList<>();// on veut pouvoir
 															// garder la liste
 															// des equipes apres
@@ -169,17 +172,17 @@ public class TournoisPouleController implements ITournoisController {
 			creerMatchs(poule);
 			poules.add(poule);
 		}
-		tournoisPoule.setPoules(poules);
+		tournois.setPoules(poules);
 
 		equipesTampon.addAll(equipes);
-		tournoisPoule.setEquipes(equipesTampon);
+		tournois.setEquipes(equipesTampon);
 		return equipes;
 	}
 
 	// Cree des poules de 4
-	private ArrayList<Equipe> creerPoulesCompletes(TournoisPoule tournoisPoule) {
+	private ArrayList<Equipe> creerPoulesCompletes() {
 
-		ArrayList<Equipe> equipes = tournoisPoule.getEquipes();
+		ArrayList<Equipe> equipes = tournois.getEquipes();
 		ArrayList<Equipe> equipesTampon = new ArrayList<>();// on veut pouvoir
 															// garder la liste
 															// des equipes apres
@@ -204,15 +207,15 @@ public class TournoisPouleController implements ITournoisController {
 			creerMatchs(poule);
 			poules.add(poule);
 		}
-		tournoisPoule.setPoules(poules);
+		tournois.setPoules(poules);
 
 		equipesTampon.addAll(equipes);
-		tournoisPoule.setEquipes(equipesTampon);
+		tournois.setEquipes(equipesTampon);
 		return equipes;
 	}
 
 	// Passage en phase d'elimination directe
-	private TournoisDirect phaseFinal(TournoisPoule tournois) {
+	private TournoisDirect phaseFinal() {
 
 		ArrayList<Equipe> qualifies = tournois.getQualifies();
 		ArrayList<Poule> poules = tournois.getPoules();
@@ -248,9 +251,4 @@ public class TournoisPouleController implements ITournoisController {
 		return true;
 	}
 
-	@Override
-	public boolean finMatch(TournoisDirect tournois, Match match, int score1, int score2) {
-		// do nothing
-		return false;
-	}
 }

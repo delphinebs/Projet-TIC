@@ -19,7 +19,7 @@ public class CreationInitiale {
 	@Test
 	public void creationPouleMultiple4() {
 
-		TournoisPouleController controller = new TournoisPouleController();
+		
 		ArrayList<Equipe> equipes = new ArrayList<>();
 	
 		//Creation de 8 equipes => 2 poules de 4 equipes
@@ -28,8 +28,8 @@ public class CreationInitiale {
 		}
 		
 		TournoisPoule tournoisPoule = new TournoisPoule("TournoisTest", equipes);
-		
-		controller.start(tournoisPoule);
+		TournoisPouleController controller = new TournoisPouleController(tournoisPoule);
+		controller.start();
 		
 		ArrayList<Poule> poules = tournoisPoule.getPoules();
 		
@@ -58,7 +58,6 @@ public class CreationInitiale {
 
 	@Test
 	public void creationPoule3Trop() {
-		TournoisPouleController controller = new TournoisPouleController();
 		ArrayList<Equipe> equipes = new ArrayList<>();
 	
 		//11 equipes => 2 poules, une de 3 equipes et 2 de 4 equipes
@@ -67,8 +66,8 @@ public class CreationInitiale {
 		}
 		
 		TournoisPoule tournoisPoule = new TournoisPoule("TournoisTest", equipes);
-		
-		controller.start(tournoisPoule);
+		TournoisPouleController controller = new TournoisPouleController(tournoisPoule);
+		controller.start();
 		
 		ArrayList<Poule> poules = tournoisPoule.getPoules();
 		
@@ -100,7 +99,6 @@ public class CreationInitiale {
 
 	@Test
 	public void creationPoule2Trop() {
-		TournoisPouleController controller = new TournoisPouleController();
 		ArrayList<Equipe> equipes = new ArrayList<>();
 	
 		//10 equipes => 2 poules de 5
@@ -109,8 +107,8 @@ public class CreationInitiale {
 		}
 		
 		TournoisPoule tournoisPoule = new TournoisPoule("TournoisTest", equipes);
-		
-		controller.start(tournoisPoule);
+		TournoisPouleController controller = new TournoisPouleController(tournoisPoule);
+		controller.start();
 		
 		ArrayList<Poule> poules = tournoisPoule.getPoules();
 		
@@ -138,7 +136,6 @@ public class CreationInitiale {
 
 	@Test
 	public void creationPoule1Trop() {
-		TournoisPouleController controller = new TournoisPouleController();
 		ArrayList<Equipe> equipes = new ArrayList<>();
 	
 		//9 equipes => 1 poule de 4 et 1 poule de 5
@@ -147,8 +144,8 @@ public class CreationInitiale {
 		}
 		
 		TournoisPoule tournoisPoule = new TournoisPoule("TournoisTest", equipes);
-		
-		controller.start(tournoisPoule);
+		TournoisPouleController controller = new TournoisPouleController(tournoisPoule);
+		controller.start();
 		
 		ArrayList<Poule> poules = tournoisPoule.getPoules();
 		
@@ -173,7 +170,6 @@ public class CreationInitiale {
 	
 	@Test
 	public void creationPoule6Equipes() {
-		TournoisPouleController controller = new TournoisPouleController();
 		ArrayList<Equipe> equipes = new ArrayList<>();
 	
 		//6 equipes => 2 poules de 3
@@ -182,8 +178,8 @@ public class CreationInitiale {
 		}
 		
 		TournoisPoule tournoisPoule = new TournoisPoule("TournoisTest", equipes);
-		
-		controller.start(tournoisPoule);
+		TournoisPouleController controller = new TournoisPouleController(tournoisPoule);
+		controller.start();
 		
 		ArrayList<Poule> poules = tournoisPoule.getPoules();
 
@@ -209,7 +205,6 @@ public class CreationInitiale {
 	
 	@Test
 	public void creationArbre() {
-		TournoisDirectController controller = new TournoisDirectController();
 		ArrayList<Equipe> equipes = new ArrayList<>();
 	
 		//Creation de 13 equipes
@@ -217,9 +212,9 @@ public class CreationInitiale {
 			equipes.add(new Equipe("Equipe"+(i+1)));
 		}
 		
-		TournoisDirect tournoisDirect = new TournoisDirect("TournoisTest", equipes);
-		
-		controller.start(tournoisDirect);
+		TournoisDirect tournoisDirect= new TournoisDirect("TournoisTest", equipes);
+		TournoisDirectController controller = new TournoisDirectController(tournoisDirect);
+		controller.start();
 		
 		ArrayList<Match[]> arbre = tournoisDirect.getArbre();
 		

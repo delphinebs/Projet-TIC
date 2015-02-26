@@ -16,8 +16,6 @@ public class JavaFXView extends Application {
 		final Parent root = (Parent) loader.load();
 		final AccueilController controller = loader.<AccueilController> getController();
 
-		//primaryStage.initStyle(StageStyle.DECORATED);
-        //primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
         primaryStage.setTitle("Gestionnaire de tournois");
 
         Scene scene = new Scene(root,800,400);
@@ -25,7 +23,6 @@ public class JavaFXView extends Application {
         Platform.setImplicitExit(false);
 
         controller.setStage(primaryStage);
-        //primaryStage.setFullScreen(true);
         primaryStage.show();   
 	}
 

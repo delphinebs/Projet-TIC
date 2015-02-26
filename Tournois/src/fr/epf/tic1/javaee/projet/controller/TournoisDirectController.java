@@ -3,40 +3,25 @@ package fr.epf.tic1.javaee.projet.controller;
 import java.util.ArrayList;
 import java.util.Random;
 
-import fr.epf.tic1.javaee.projet.model.ATournois;
 import fr.epf.tic1.javaee.projet.model.Equipe;
 import fr.epf.tic1.javaee.projet.model.Match;
-import fr.epf.tic1.javaee.projet.model.Poule;
 import fr.epf.tic1.javaee.projet.model.TournoisDirect;
-import fr.epf.tic1.javaee.projet.model.TournoisPoule;
 
 public class TournoisDirectController implements ITournoisController {
 
-	@Override
-	public void start(ATournois tournois) {
-		TournoisDirect tournoisDirect = (TournoisDirect) tournois;
-		creerArbre(tournoisDirect);
+	private TournoisDirect tournois;
+	
+	public TournoisDirectController(TournoisDirect tournois) {
+		this.tournois=tournois;
 	}
-
-	// Utiliser le boolean pour savoir si le tournois est finis
-	@Override
-	public boolean finMatch(TournoisDirect tournois, Match match, int score1,
-			int score2) {
-		match.setScore(score1, score2);
-		ArrayList<Match[]> arbre = tournois.getArbre();
-
-		if (finTour(arbre, tournois.getTour())) {
-			if (finDeTournois(tournois))
-				return true;
-			monterEquipes(arbre, tournois.getTour());
-			tournois.setTour(tournois.getTour() + 1);
-			return false;
-		}
-		return false;
+	
+	public TournoisDirect getTournois() {
+		return tournois;
 	}
-
+	
 	// Cree l'arbre du tournois ainsi que les matchs du premier tour
-	private void creerArbre(TournoisDirect tournois) {
+	@Override
+	public void start() {
 		ArrayList<Equipe> equipes = tournois.getEquipes();
 		ArrayList<Equipe> equipesTampon = new ArrayList<>();
 		ArrayList<Match[]> arbre = tournois.getArbre();
@@ -125,19 +110,33 @@ public class TournoisDirectController implements ITournoisController {
 
 		tournois.setArbre(arbre);
 		tournois.setEquipes(equipesTampon);
+	}
 
+	// Utiliser le boolean pour savoir si le tournois est finis
+	public boolean finMatch(Match match, int score1,
+			int score2) {
+		match.setScore(score1, score2);
+		if (finTour()) {
+			if (finDeTournois())
+				return true;
+			monterEquipes();
+			tournois.setTour(tournois.getTour() + 1);
+			return false;
+		}
+		return false;
 	}
 
 	// Verif si le tournois est fini
-	private boolean finDeTournois(TournoisDirect tournois) {
+	private boolean finDeTournois() {
 		if (tournois.getArbre().size() <= tournois.getTour() + 1)
 			return true;
 		return false;
 	}
 
 	// Verif si le tour actuel est fini
-	private boolean finTour(ArrayList<Match[]> arbre, int tour) {
-		for (Match match : arbre.get(tour)) {
+	private boolean finTour() {
+		ArrayList<Match[]> arbre = tournois.getArbre();
+		for (Match match : arbre.get(tournois.getTour())) {
 			if (!match.getJoue())
 				return false;
 		}
@@ -145,7 +144,10 @@ public class TournoisDirectController implements ITournoisController {
 	}
 
 	// Fais monter les equipes en fonction des resultats du tours
-	private void monterEquipes(ArrayList<Match[]> arbre, int tour) {
+	private void monterEquipes() {
+		ArrayList<Match[]> arbre = tournois.getArbre();
+		int tour = tournois.getTour();
+		
 		Match[] matchsCourants = arbre.get(tour);
 		Match[] matchsSuivants = arbre.get(tour + 1);
 
@@ -215,10 +217,4 @@ public class TournoisDirectController implements ITournoisController {
 		}
 	}
 
-	@Override
-	public TournoisDirect finMatch(TournoisPoule tournois, Poule poule,
-			Match match, int score1, int score2) {
-		// do nothing
-		return null;
-	}
 }

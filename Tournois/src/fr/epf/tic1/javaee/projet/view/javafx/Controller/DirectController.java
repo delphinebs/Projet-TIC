@@ -52,10 +52,7 @@ public class DirectController {
 	public Label scoreTypeLabel;
 	@FXML
 	public Label AffichageGlobalLabel;
-	@FXML
-	public Label editEquipeLabel;
 
-	private TournoisDirect tournois;
 	private TournoisDirectController tournoisController;
 
 	private Match matchCourant;
@@ -64,22 +61,22 @@ public class DirectController {
 
 	public void init(String nom, ArrayList<Equipe> equipes, Stage primaryStage) {
 		stage = primaryStage;
-
-		tournois = new TournoisDirect(nom, equipes);
-		tournoisController = new TournoisDirectController();
+		
+		tournoisController = new TournoisDirectController(new TournoisDirect(nom, equipes));
 
 		for (Equipe equipe : equipes) {
 			listEquipeCombo.getItems().add(equipe.getNom());
 		}
 
-		tournoisController.start(tournois);
+		tournoisController.start();
 
 		listMatchCombo.setVisible(true);
 		miseAjourAffichage();
 	}
 
 	private void miseAjourAffichage() {
-
+		TournoisDirect tournois = tournoisController.getTournois();
+		
 		// Mise a jour de l'affichage global
 		String texte = "";
 
@@ -108,6 +105,8 @@ public class DirectController {
 	}
 
 	public void SaisirScore() {
+		TournoisDirect tournois = tournoisController.getTournois();
+		
 		if (!listMatchCombo.valueProperty().isNull().get()) {
 
 			String matchStr = listMatchCombo.getValue();
@@ -130,6 +129,8 @@ public class DirectController {
 	}
 
 	public void ValiderScore() {
+		TournoisDirect tournois = tournoisController.getTournois();
+		
 		if (score1Text.getText().equals("") || score2Text.getText().equals("")) {
 			scoreLabel.setVisible(true);
 		} else {
@@ -153,7 +154,7 @@ public class DirectController {
 					dialog.setScene(dialogScene);
 					dialog.show();
 				} else {
-					if (tournoisController.finMatch(tournois, matchCourant,
+					if (tournoisController.finMatch(matchCourant,
 							Integer.parseInt(score1Text.getText()),
 							Integer.parseInt(score2Text.getText()))) {
 
@@ -193,6 +194,8 @@ public class DirectController {
 	}
 
 	public void GererEquipe() {
+		TournoisDirect tournois = tournoisController.getTournois();
+		
 		if (!listEquipeCombo.valueProperty().isNull().get()) {
 			String equipeStr = listEquipeCombo.getValue();
 
@@ -215,6 +218,8 @@ public class DirectController {
 	}
 
 	public void Stats() {
+		TournoisDirect tournois = tournoisController.getTournois();
+		
 		Stage dialog = new Stage();
 		dialog.initModality(Modality.APPLICATION_MODAL);
 		dialog.initOwner(stage);
@@ -228,6 +233,8 @@ public class DirectController {
 	}
 
 	public void SauvModif() {
+		TournoisDirect tournois = tournoisController.getTournois();
+		
 		if (nomEquipeText.getText().equals("")
 				|| nomEquipeText.getText().equals("default")
 				|| !nbJoueursText.getText().matches("[0-9]*")) {
@@ -257,6 +264,7 @@ public class DirectController {
 				equipeCourante.setNbJoueur(Integer.parseInt((nbJoueursText
 						.getText())));
 
+				listEquipeCombo.setVisible(false);
 				sauvModifButton.setVisible(false);
 				nomEquipeText.setVisible(false);
 				nbJoueursText.setVisible(false);
@@ -333,7 +341,6 @@ public class DirectController {
 		statsButton.setVisible(false);
 		listEquipeCombo.setVisible(false);
 		gererEquipeButton.setVisible(false);
-		editEquipeLabel.setVisible(false);
 
 		miseAjourAffichage();
 	}

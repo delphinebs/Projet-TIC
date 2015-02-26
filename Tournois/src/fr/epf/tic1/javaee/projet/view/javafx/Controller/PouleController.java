@@ -75,10 +75,8 @@ public class PouleController {
 	@FXML
 	public TextField descriptionText;
 
-	private TournoisPoule tournois;
 	private TournoisPouleController tournoisController;
 
-	private TournoisDirect direct;
 	private TournoisDirectController tournoisDirectController;
 
 	private Poule pouleCourante;
@@ -89,9 +87,9 @@ public class PouleController {
 	public void init(String nom, ArrayList<Equipe> equipes, Stage primaryStage) {
 		stage = primaryStage;
 
-		tournois = new TournoisPoule(nom, equipes);
-		tournoisController = new TournoisPouleController();
-		tournoisController.start(tournois);
+		TournoisPoule tournois = new TournoisPoule(nom, equipes);
+		tournoisController = new TournoisPouleController(tournois);
+		tournoisController.start();
 
 		ArrayList<Poule> poules = tournois.getPoules();
 
@@ -99,14 +97,9 @@ public class PouleController {
 			listPouleCombo.getItems().add(poule.getNumero());
 		}
 
-		// Reset Combobox
-		listEquipeCombo.getItems().clear();
 		for (Equipe equipe : tournois.getEquipes()) {
 			listEquipeCombo.getItems().add(equipe.getNom());
 		}
-		listEquipeCombo.valueProperty().set(null);
-
-		miseAjourAffichage();
 	}
 
 	public void Stats() {
@@ -115,14 +108,27 @@ public class PouleController {
 		dialog.initOwner(stage);
 		VBox dialogVbox = new VBox(20);
 		dialog.setTitle("Statisitqueq de l'equipe " + equipeCourante.getNom());
-		dialogVbox.getChildren().add(
-				new Text(equipeCourante.stats(direct, tournois)));
+		if (tournoisDirectController == null) {
+			dialogVbox.getChildren().add(
+					new Text(equipeCourante.stats(null,
+							tournoisController.getTournois())));
+
+		} else {
+			dialogVbox.getChildren().add(
+					new Text(equipeCourante.stats(
+							tournoisDirectController.getTournois(),
+							tournoisController.getTournois())));
+		}
 		Scene dialogScene = new Scene(dialogVbox, 300, 200);
 		dialog.setScene(dialogScene);
 		dialog.show();
 	}
 
 	private void miseAjourAffichage() {
+		TournoisDirect direct = null;
+
+		if (tournoisDirectController != null)
+			direct = tournoisDirectController.getTournois();
 
 		if (direct != null) {
 			listMatchDirectCombo.getItems().clear();
@@ -171,7 +177,7 @@ public class PouleController {
 		if (!listPouleCombo.equals(null)) {
 			int pouleCouranteNB = listPouleCombo.getValue();
 
-			for (Poule poule : tournois.getPoules()) {
+			for (Poule poule : tournoisController.getTournois().getPoules()) {
 				if (poule.getNumero() == pouleCouranteNB) {
 					pouleCourante = poule;
 					break;
@@ -191,7 +197,7 @@ public class PouleController {
 		if (!listMatchCombo.equals(null)) {
 			int pouleCouranteNB = listPouleCombo.getValue();
 
-			for (Poule poule : tournois.getPoules()) {
+			for (Poule poule : tournoisController.getTournois().getPoules()) {
 				if (poule.getNumero() == pouleCouranteNB) {
 					pouleCourante = poule;
 					break;
@@ -218,6 +224,8 @@ public class PouleController {
 	}
 
 	public void SaisirScoreD() {
+		TournoisDirect direct = tournoisDirectController.getTournois();
+
 		if (!listMatchDirectCombo.equals(null)) {
 
 			String matchStr = listMatchDirectCombo.getValue();
@@ -248,14 +256,16 @@ public class PouleController {
 			if (score1Text.getText().matches("[0-9]*")
 					&& score2Text.getText().matches("[0-9]*")) {
 				scoreTypeLabel.setVisible(false);
-				direct = tournoisController.finMatch(tournois, pouleCourante,
-						matchCourant, Integer.parseInt(score1Text.getText()),
+				TournoisDirect direct = tournoisController.finMatch(
+						pouleCourante, matchCourant,
+						Integer.parseInt(score1Text.getText()),
 						Integer.parseInt(score2Text.getText()));
 
 				if (direct != null) {
 					// Debut du tournois en arbre
-					tournoisDirectController = new TournoisDirectController();
-					tournoisDirectController.start(direct);
+					tournoisDirectController = new TournoisDirectController(
+							direct);
+					tournoisDirectController.start();
 					miseAjourAffichage();
 					score1Text.setDisable(true);
 					score2Text.setDisable(true);
@@ -264,6 +274,8 @@ public class PouleController {
 
 					phasePouleLabel.setText("Phase de Poule : (terminee)");
 					phaseDirectLabel.setVisible(true);
+					
+					AffichageGlobalLabel.setVisible(true);
 				}
 
 				miseAjourAffichage();
@@ -305,7 +317,7 @@ public class PouleController {
 					dialog.setScene(dialogScene);
 					dialog.show();
 				} else {
-					if (tournoisDirectController.finMatch(direct, matchCourant,
+					if (tournoisDirectController.finMatch(matchCourant,
 							Integer.parseInt(score1DText.getText()),
 							Integer.parseInt(score2DText.getText()))) {
 
@@ -315,14 +327,15 @@ public class PouleController {
 						dialog.initOwner(stage);
 						VBox dialogVbox = new VBox(20);
 						dialog.setTitle("Fin du tournois");
-						dialogVbox
-								.getChildren()
-								.add(new Text(
-										"L'equipe "+direct.getGagnant()+" gagne le tournois!!"));
+						dialogVbox.getChildren().add(
+								new Text("L'equipe "
+										+ tournoisDirectController
+												.getTournois().getGagnant()
+										+ " gagne le tournois!!"));
 						Scene dialogScene = new Scene(dialogVbox, 300, 200);
 						dialog.setScene(dialogScene);
 						dialog.show();
-						
+
 						score1DText.setDisable(true);
 						score2DText.setDisable(true);
 						validerDButton.setDisable(true);
@@ -348,7 +361,7 @@ public class PouleController {
 		if (!listEquipeCombo.valueProperty().isNull().get()) {
 			String equipeStr = listEquipeCombo.getValue();
 
-			for (Equipe equipe : tournois.getEquipes()) {
+			for (Equipe equipe : tournoisController.getTournois().getEquipes()) {
 				if (equipe.getNom().equals(equipeStr)) {
 					equipeCourante = equipe;
 					break;
@@ -384,7 +397,8 @@ public class PouleController {
 			dialog.show();
 		} else {
 			try {
-				for (Equipe equipe : tournois.getEquipes()) {
+				for (Equipe equipe : tournoisController.getTournois()
+						.getEquipes()) {
 					if (equipe.getNom().equals(nomEquipeText.getText())
 							&& !equipe.equals(equipeCourante)) {
 						throw new NomDejaPrisExecption();
@@ -395,6 +409,7 @@ public class PouleController {
 				equipeCourante.setNbJoueur(Integer.parseInt((nbJoueursText
 						.getText())));
 
+				listEquipeCombo.setVisible(false);
 				sauvModifButton.setVisible(false);
 				nomEquipeText.setVisible(false);
 				nbJoueursText.setVisible(false);
@@ -402,11 +417,13 @@ public class PouleController {
 				statsButton.setVisible(false);
 
 				miseAjourAffichage();
-				if (direct != null) {
-					AffichageGlobalLabel.setVisible(true);
-					listMatchDirectCombo.setVisible(true);
-					phaseDirectLabel.setVisible(true);
-					phaseDirectLabel.setVisible(true);
+				if (tournoisDirectController != null) {
+					if (tournoisDirectController.getTournois() != null) {
+						AffichageGlobalLabel.setVisible(true);
+						listMatchDirectCombo.setVisible(true);
+						phaseDirectLabel.setVisible(true);
+						phaseDirectLabel.setVisible(true);
+					}
 				}
 				phasePouleLabel.setVisible(true);
 				listPouleCombo.setVisible(true);
@@ -415,7 +432,8 @@ public class PouleController {
 
 				// Reset Combobox
 				listEquipeCombo.getItems().clear();
-				for (Equipe equipe : tournois.getEquipes()) {
+				for (Equipe equipe : tournoisController.getTournois()
+						.getEquipes()) {
 					listEquipeCombo.getItems().add(equipe.getNom());
 				}
 			} catch (NomDejaPrisExecption ndpe) {
@@ -481,10 +499,12 @@ public class PouleController {
 	public void Gererletournois() {
 		miseAjourAffichage();
 
-		if (direct != null) {
-			AffichageGlobalLabel.setVisible(true);
-			listMatchDirectCombo.setVisible(true);
-			phaseDirectLabel.setVisible(true);
+		if (tournoisDirectController != null) {
+			if (tournoisDirectController.getTournois() != null) {
+				AffichageGlobalLabel.setVisible(true);
+				listMatchDirectCombo.setVisible(true);
+				phaseDirectLabel.setVisible(true);
+			}
 		}
 		phasePouleLabel.setVisible(true);
 		listPouleCombo.setVisible(true);

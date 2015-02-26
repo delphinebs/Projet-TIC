@@ -20,7 +20,6 @@ public class EntrerUnScore {
 
 	@Test
 	public void entrerScoreSimple() {
-		TournoisPouleController controller = new TournoisPouleController();
 		ArrayList<Equipe> equipes = new ArrayList<>();
 	
 		for(int i=0; i<8 ; i++){
@@ -28,8 +27,8 @@ public class EntrerUnScore {
 		}
 		
 		TournoisPoule tournoisPoule = new TournoisPoule("TournoisTest", equipes);
-		
-		controller.start(tournoisPoule);
+		TournoisPouleController controller = new TournoisPouleController(tournoisPoule);
+		controller.start();
 		
 		Poule poule1 = tournoisPoule.getPoules().get(0);
 		
@@ -44,7 +43,7 @@ public class EntrerUnScore {
 //		}
 //		System.out.println("-----------------");
 //		
-		assertNull(controller.finMatch(tournoisPoule, poule1, match, 0, 1));
+		assertNull(controller.finMatch(poule1, match, 0, 1));
 	
 //		for(ResultatsEquipe res : poule1.getClassement()){
 //			System.out.println(res);
@@ -56,15 +55,15 @@ public class EntrerUnScore {
 //		}
 		
 		match = poule1.getMatchs().get(0);
-		assertNull(controller.finMatch(tournoisPoule, poule1, match, 0, 1));
+		assertNull(controller.finMatch(poule1, match, 0, 1));
 		match = poule1.getMatchs().get(1);
-		assertNull(controller.finMatch(tournoisPoule, poule1, match, 0, 1));
+		assertNull(controller.finMatch(poule1, match, 0, 1));
 		match = poule1.getMatchs().get(2);
-		assertNull(controller.finMatch(tournoisPoule, poule1, match, 0, 1));
+		assertNull(controller.finMatch(poule1, match, 0, 1));
 		match = poule1.getMatchs().get(3);
-		assertNull(controller.finMatch(tournoisPoule, poule1, match, 0, 1));
+		assertNull(controller.finMatch(poule1, match, 0, 1));
 		match = poule1.getMatchs().get(5);
-		assertNull(controller.finMatch(tournoisPoule, poule1, match, 0, 1));
+		assertNull(controller.finMatch(poule1, match, 0, 1));
 		
 		Poule poule2 = tournoisPoule.getPoules().get(1);
 		
@@ -72,20 +71,20 @@ public class EntrerUnScore {
 //		System.out.println(poule2.getClassement());
 		
 		match = poule2.getMatchs().get(0);
-		assertNull(controller.finMatch(tournoisPoule, poule2, match, 0, 1));
+		assertNull(controller.finMatch(poule2, match, 0, 1));
 		match = poule2.getMatchs().get(1);
-		assertNull(controller.finMatch(tournoisPoule, poule2, match, 0, 1));
+		assertNull(controller.finMatch(poule2, match, 0, 1));
 		match = poule2.getMatchs().get(2);
-		assertNull(controller.finMatch(tournoisPoule, poule2, match, 0, 1));
+		assertNull(controller.finMatch(poule2, match, 0, 1));
 		match = poule2.getMatchs().get(3);
-		assertNull(controller.finMatch(tournoisPoule, poule2, match, 0, 1));
+		assertNull(controller.finMatch(poule2, match, 0, 1));
 		match = poule2.getMatchs().get(4);
-		assertNull(controller.finMatch(tournoisPoule, poule2, match, 0, 1));
+		assertNull(controller.finMatch(poule2, match, 0, 1));
 		match = poule2.getMatchs().get(5);
-		TournoisDirect tournoisDirect = controller.finMatch(tournoisPoule, poule2, match, 0, 1);
 		
-		TournoisDirectController controller2 = new TournoisDirectController();
-		controller2.start(tournoisDirect);
+		TournoisDirect tournoisDirect = controller.finMatch(poule2, match, 0, 1);
+		TournoisDirectController controller2 = new TournoisDirectController(tournoisDirect);
+		controller2.start();
 		
 //		System.out.println(poule1.getClassement());
 //		System.out.println("-----------------");
@@ -96,17 +95,17 @@ public class EntrerUnScore {
 //		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(0)[0];
-		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));//verfif pas fin de tournois
+		assertFalse(controller2.finMatch(match, 0, 1));//verfif pas fin de tournois
 		
 //		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(0)[1];
-		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));
+		assertFalse(controller2.finMatch(match, 0, 1));
 		
 //		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(1)[0];
-		assertTrue(controller2.finMatch(tournoisDirect, match, 0, 1));
+		assertTrue(controller2.finMatch(match, 0, 1));
 		
 		//System.out.println(tournoisDirect);
 		
@@ -118,29 +117,29 @@ public class EntrerUnScore {
 		}
 	
 		tournoisDirect = new TournoisDirect("Nom", equipes);
-		
-		controller2.start(tournoisDirect);
+		controller2 = new TournoisDirectController(tournoisDirect);
+		controller2.start();
 		
 //		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(0)[0];
-		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));//verfif pas fin de tournois
+		assertFalse(controller2.finMatch(match, 0, 1));//verfif pas fin de tournois
 		
 		
 //		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(0)[1];
-		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));
+		assertFalse(controller2.finMatch(match, 0, 1));
 		
 //		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(1)[1];
-		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));
+		assertFalse(controller2.finMatch(match, 0, 1));
 
 //		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(2)[0];
-		assertTrue(controller2.finMatch(tournoisDirect, match, 0, 1));
+		assertTrue(controller2.finMatch(match, 0, 1));
 		
 //		System.out.println(tournoisDirect);
 
