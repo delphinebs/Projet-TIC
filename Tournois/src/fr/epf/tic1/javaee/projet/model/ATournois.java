@@ -7,6 +7,31 @@ public abstract class ATournois {
 	private String nom;
 	private ArrayList<Equipe> equipes;	
 	
+
+	/*Constructors*/
+	//
+	//
+
+	public ATournois(){
+		nom = "default";//Permet de savoir si une equipe est "null"
+		equipes = new ArrayList<>();
+	}
+	
+	public ATournois(String nom){
+		this.nom = nom;
+		equipes = new ArrayList<>();
+	}
+	
+	public ATournois(String nom, ArrayList<Equipe> equipes){
+		this.nom = nom;
+		this.equipes = equipes;
+	}
+	
+	
+	/*Getter - Setter*/
+	//
+	//
+	
 	public String getNom() {
 		return nom;
 	}
@@ -22,21 +47,4 @@ public abstract class ATournois {
 	public void setEquipes(ArrayList<Equipe> equipes) {
 		this.equipes = equipes;
 	}
-
-	public ATournois(){
-		nom = "default";
-		equipes = new ArrayList<>();
-	}
-	
-	public ATournois(String nom){
-		this.nom = nom;
-		equipes = new ArrayList<>();
-	}
-	
-	public ATournois(String nom, ArrayList<Equipe> equipes){
-		this.nom = nom;
-		this.equipes = equipes;
-	}
-	
-	
 }

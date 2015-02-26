@@ -1,6 +1,8 @@
 package fr.epf.tic1.javaee.projet.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -8,12 +10,16 @@ import org.junit.Test;
 
 import fr.epf.tic1.javaee.projet.controller.TournoisDirectController;
 import fr.epf.tic1.javaee.projet.controller.TournoisPouleController;
-import fr.epf.tic1.javaee.projet.model.*;
+import fr.epf.tic1.javaee.projet.model.Equipe;
+import fr.epf.tic1.javaee.projet.model.Match;
+import fr.epf.tic1.javaee.projet.model.Poule;
+import fr.epf.tic1.javaee.projet.model.TournoisDirect;
+import fr.epf.tic1.javaee.projet.model.TournoisPoule;
 
-public class MatchJoue {
+public class EntrerUnScore {
 
 	@Test
-	public void matchJoueSimple() {
+	public void entrerScoreSimple() {
 		TournoisPouleController controller = new TournoisPouleController();
 		ArrayList<Equipe> equipes = new ArrayList<>();
 	
@@ -80,23 +86,24 @@ public class MatchJoue {
 		
 		TournoisDirectController controller2 = new TournoisDirectController();
 		controller2.start(tournoisDirect);
+		
 //		System.out.println(poule1.getClassement());
 //		System.out.println("-----------------");
 //		System.out.println(poule2.getClassement());
 //		System.out.println("-----------------");
 //		System.out.println("-----------------");
 		
-		//System.out.println(tournoisDirect);
+//		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(0)[0];
 		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));//verfif pas fin de tournois
 		
-		//System.out.println(tournoisDirect);
+//		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(0)[1];
 		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));
 		
-		//System.out.println(tournoisDirect);
+//		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(1)[0];
 		assertTrue(controller2.finMatch(tournoisDirect, match, 0, 1));
@@ -114,32 +121,29 @@ public class MatchJoue {
 		
 		controller2.start(tournoisDirect);
 		
-		System.out.println(tournoisDirect);
+//		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(0)[0];
 		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));//verfif pas fin de tournois
 		
 		
-		System.out.println(tournoisDirect);
+//		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(0)[1];
-		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));//verfif pas fin de tournois
+		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));
 		
-		
-		System.out.println(tournoisDirect);
+//		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(1)[1];
-		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));//verfif pas fin de tournois
-		
+		assertFalse(controller2.finMatch(tournoisDirect, match, 0, 1));
 
-		System.out.println(tournoisDirect);
+//		System.out.println(tournoisDirect);
 		
 		match = tournoisDirect.getArbre().get(2)[0];
-		assertTrue(controller2.finMatch(tournoisDirect, match, 0, 1));//verfif pas fin de tournois
+		assertTrue(controller2.finMatch(tournoisDirect, match, 0, 1));
 		
-		System.out.println(tournoisDirect);
+//		System.out.println(tournoisDirect);
 
-		
 	}
 
 }

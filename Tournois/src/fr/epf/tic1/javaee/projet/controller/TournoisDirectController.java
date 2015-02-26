@@ -6,7 +6,9 @@ import java.util.Random;
 import fr.epf.tic1.javaee.projet.model.ATournois;
 import fr.epf.tic1.javaee.projet.model.Equipe;
 import fr.epf.tic1.javaee.projet.model.Match;
+import fr.epf.tic1.javaee.projet.model.Poule;
 import fr.epf.tic1.javaee.projet.model.TournoisDirect;
+import fr.epf.tic1.javaee.projet.model.TournoisPoule;
 
 public class TournoisDirectController implements ITournoisController {
 
@@ -16,8 +18,27 @@ public class TournoisDirectController implements ITournoisController {
 		creerArbre(tournoisDirect);
 	}
 
+	// Utiliser le boolean pour savoir si le tournois est finis
+	@Override
+	public boolean finMatch(TournoisDirect tournois, Match match, int score1,
+			int score2) {
+		match.setScore(score1, score2);
+		ArrayList<Match[]> arbre = tournois.getArbre();
+
+		if (finTour(arbre, tournois.getTour())) {
+			if (finDeTournois(tournois))
+				return true;
+			monterEquipes(arbre, tournois.getTour());
+			tournois.setTour(tournois.getTour() + 1);
+			return false;
+		}
+		return false;
+	}
+
+	// Cree l'arbre du tournois ainsi que les matchs du premier tour
 	private void creerArbre(TournoisDirect tournois) {
 		ArrayList<Equipe> equipes = tournois.getEquipes();
+		ArrayList<Equipe> equipesTampon = new ArrayList<>();
 		ArrayList<Match[]> arbre = tournois.getArbre();
 
 		Match[] matchs = null;
@@ -28,7 +49,7 @@ public class TournoisDirectController implements ITournoisController {
 		int index1, index2;
 
 		switch (nbEquipe % 2) {
-		case 0:
+		case 0:// Cas nombre d'equipe paire => aucun prequalifie
 			matchs = new Match[nbEquipe / 2];
 			for (int i = 0; i < nbEquipe / 2; i++) {
 
@@ -39,13 +60,15 @@ public class TournoisDirectController implements ITournoisController {
 
 				matchs[i] = new Match(equipes.get(index1), equipes.get(index2));
 
-				equipes.remove(index1);
-				if(index1<index2) equipes.remove(index2-1);
-				else equipes.remove(index2);
+				equipesTampon.add(equipes.remove(index1));
+				if (index1 < index2)
+					equipesTampon.add(equipes.remove(index2 - 1));
+				else
+					equipesTampon.add(equipes.remove(index2));
 			}
 			arbre.add(matchs);
 			break;
-		case 1:
+		case 1:// Cas nombre d'equipe impaire => 1 prequalifie
 			matchs = new Match[((int) nbEquipe / 2) + 1];
 			for (int i = 0; i < (int) nbEquipe / 2; i++) {
 
@@ -56,12 +79,17 @@ public class TournoisDirectController implements ITournoisController {
 
 				matchs[i] = new Match(equipes.get(index1), equipes.get(index2));
 
-				equipes.remove(index1);
-				if(index1<index2) equipes.remove(index2-1);
-				else equipes.remove(index2);
+				equipesTampon.add(equipes.remove(index1));
+				if (index1 < index2)
+					equipesTampon.add(equipes.remove(index2 - 1));
+				else
+					equipesTampon.add(equipes.remove(index2));
 			}
+			equipesTampon.add(equipes.get(0));
 			matchs[(int) nbEquipe / 2] = new Match(equipes.get(0), new Equipe());
-			matchs[(int) nbEquipe / 2].setScore(-2, -2);
+			matchs[(int) nbEquipe / 2].setScore(-2, -2);// score -2 indique non
+														// match mais
+														// prequalifie
 			arbre.add(matchs);
 			break;
 		}
@@ -73,8 +101,10 @@ public class TournoisDirectController implements ITournoisController {
 
 		int nbEtageInt = (int) nbEtage;
 
-		if (nbEtage - nbEtageInt == 0.000) nbEtageFinal = nbEtageInt;
-		else nbEtageFinal = nbEtageInt + 1;
+		if (nbEtage - nbEtageInt == 0.000)
+			nbEtageFinal = nbEtageInt;
+		else
+			nbEtageFinal = nbEtageInt + 1;
 
 		for (int i = 1; i < (nbEtageFinal); i++) {
 
@@ -92,100 +122,103 @@ public class TournoisDirectController implements ITournoisController {
 			arbre.add(matchs);
 
 		}
-		
+
 		tournois.setArbre(arbre);
+		tournois.setEquipes(equipesTampon);
 
 	}
 
-	//Utiliser le boolean pour savoir si le tournois est finis et si il faut appeler fin(tournois)
-	public boolean finMatch(TournoisDirect tournois,Match match, int score1, int score2){
-		match.setScore(score1,score2);//Verif si score=score => impossible
-		ArrayList<Match[]> arbre = tournois.getArbre();
-		
-		if(finTour(arbre, tournois.getTour())){
-			if(finDeTournois(tournois)) return true;
-			monterEquipes(arbre, tournois.getTour());
-			tournois.setTour(tournois.getTour()+1);
-			return false;
-		}
+	// Verif si le tournois est fini
+	private boolean finDeTournois(TournoisDirect tournois) {
+		if (tournois.getArbre().size() <= tournois.getTour() + 1)
+			return true;
 		return false;
 	}
-	
-	public void fin(TournoisDirect tournois){
-		//TODO fin de partie ou pas, necessaire?
-	}
-	
-	private boolean finDeTournois(TournoisDirect tournois){
-		if(tournois.getArbre().size()<=tournois.getTour()+1) return true;
-		return false;
-	}
-	
-	private boolean finTour(ArrayList<Match[]> arbre, int tour){
-		for(Match match : arbre.get(tour)){
-			if(!match.getJoue()) return false;
+
+	// Verif si le tour actuel est fini
+	private boolean finTour(ArrayList<Match[]> arbre, int tour) {
+		for (Match match : arbre.get(tour)) {
+			if (!match.getJoue())
+				return false;
 		}
 		return true;
 	}
-	
-	private void monterEquipes(ArrayList<Match[]> arbre, int tour){
+
+	// Fais monter les equipes en fonction des resultats du tours
+	private void monterEquipes(ArrayList<Match[]> arbre, int tour) {
 		Match[] matchsCourants = arbre.get(tour);
-		Match[] matchsSuivants = arbre.get(tour+1);
-		
-		switch(tour%2){
+		Match[] matchsSuivants = arbre.get(tour + 1);
+
+		switch (tour % 2) {
 		case 0:
-			for(int i=matchsCourants.length-1 ; i>=0 ; i--){
+			for (int i = matchsCourants.length - 1; i >= 0; i--) {
 				mettreAdroite(quiGagne(matchsCourants[i]), matchsSuivants);
 			}
 			setDefaultScore(matchsSuivants[0]);
 			break;
 		case 1:
-			for(int i=0 ; i<matchsCourants.length ; i++){
+			for (int i = 0; i < matchsCourants.length; i++) {
 				mettreAgauche(quiGagne(matchsCourants[i]), matchsSuivants);
 			}
-			setDefaultScore(matchsSuivants[matchsSuivants.length-1]);
+			setDefaultScore(matchsSuivants[matchsSuivants.length - 1]);
 			break;
 		}
 	}
-	
-	private void setDefaultScore(Match match){
-		if(match.getEquipes()[0].getNom().equals("default") || match.getEquipes()[1].getNom().equals("default")){
+
+	// Permet de mettre les scores à -2 pour les "faux matchs" (qui permettent
+	// de contenir les prequalifies )
+	private void setDefaultScore(Match match) {
+		if (match.getEquipes()[0].getNom().equals("default")
+				|| match.getEquipes()[1].getNom().equals("default")) {
 			match.setScore(-2, -2);
 		}
 	}
-	
- 	private Equipe quiGagne(Match match){
-		
+
+	// Verif qui gane le match
+	private Equipe quiGagne(Match match) {
+
 		Equipe[] equipes = match.getEquipes();
-		if(equipes[0].getNom().equals("default")){
+		if (equipes[0].getNom().equals("default")) {
 			return equipes[1];
-		}
-		else if(equipes[1].getNom().equals("default")){
+		} else if (equipes[1].getNom().equals("default")) {
 			return equipes[0];
 		}
-		
-		
+
 		int[] scores = match.getScore();
-		if(scores[0]>scores[1]){
+		if (scores[0] > scores[1]) {
 			return equipes[0];
-		}
-		else if(scores[0]<scores[1]){
+		} else if (scores[0] < scores[1]) {
 			return equipes[1];
 		}
-		
-		return equipes[0];//execption??
+
+		return equipes[0];// execption??
 	}
 
-	private void mettreAdroite(Equipe equipe, Match[] matchs){
-		for(int i=matchs.length-1 ; i>=0 ; i--){
-			if(matchs[i]==null) matchs[i] = new Match();
-			if(matchs[i].setEquipes(equipe)) return;
+	// Met l'equipe le plus a droite possible (permet de ne pas avoir un meme
+	// prequalifie deux fois de suite)
+	private void mettreAdroite(Equipe equipe, Match[] matchs) {
+		for (int i = matchs.length - 1; i >= 0; i--) {
+			if (matchs[i] == null)
+				matchs[i] = new Match();
+			if (matchs[i].setEquipes(equipe))
+				return;
 		}
 	}
-	
-	private void mettreAgauche(Equipe equipe, Match[] matchs){
-		for(int i=0 ; i<matchs.length ; i++){
-			if(matchs[i]==null) matchs[i] = new Match();
-			if(matchs[i].setEquipes(equipe)) return;
+
+	// Met l'equipe le plus a gauche possible
+	private void mettreAgauche(Equipe equipe, Match[] matchs) {
+		for (int i = 0; i < matchs.length; i++) {
+			if (matchs[i] == null)
+				matchs[i] = new Match();
+			if (matchs[i].setEquipes(equipe))
+				return;
 		}
+	}
+
+	@Override
+	public TournoisDirect finMatch(TournoisPoule tournois, Poule poule,
+			Match match, int score1, int score2) {
+		// do nothing
+		return null;
 	}
 }

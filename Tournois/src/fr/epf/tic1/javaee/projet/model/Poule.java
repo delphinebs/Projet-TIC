@@ -9,12 +9,22 @@ public class Poule {
 	private ArrayList<Equipe> equipes;
 	private ArrayList<ResultatsEquipe> classement;
 	
+	
+	/*Constructors*/
+	//
+	//
+	
 	public Poule(int i) {
 		numero = i;
 		matchs = new ArrayList<>();
 		equipes = new ArrayList<>();
 		classement = new ArrayList<>();
 	}
+	
+	
+	/*Getter - Setter*/
+	//
+	//
 
 	public int getNumero() {
 		return numero;

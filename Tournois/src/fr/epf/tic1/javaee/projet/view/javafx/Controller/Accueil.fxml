@@ -1,5 +1,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
@@ -7,18 +12,41 @@
 <?import java.lang.String?>
 <?import javafx.scene.control.Label?>
 
-<GridPane
+<VBox
 	fx:controller="fr.epf.tic1.javaee.projet.view.javafx.Controller.AccueilController"
-	xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
-	<Button GridPane.rowIndex="1" GridPane.columnIndex="1" text="Creer le tournois" onAction="#creerTournois"></Button>
-	<TextField GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Nom du tournois" fx:id="nomTournoisText"></TextField>
-	<Label GridPane.rowIndex="3" GridPane.columnIndex="1" Text="Remplir tous les champs" visible="false" fx:id="confirmLabel"></Label>
-	<ComboBox GridPane.rowIndex="2" GridPane.columnIndex="2" fx:id="typeTournoisCombo" promptText="Type de Tournois">
-		<items>
-			<FXCollections fx:factory="observableArrayList">
-				<String fx:value="Poules" />
-				<String fx:value="Elimination Directe" />
-			</FXCollections>
-		</items>
-	</ComboBox>
-</GridPane>
+	xmlns:fx="http://javafx.com/fxml" id="vbox" prefHeight="400" prefWidth="800">
+	<MenuBar fx:id="menuBar">
+		<menus>
+			<Menu text="General">
+				<items>
+					<MenuItem text="Nouveau Tournois" onAction="#Recommencer"/>
+					<SeparatorMenuItem />
+					<MenuItem text="Exit" onAction="#Quitter"/>
+				</items>
+			</Menu>
+		</menus>
+	</MenuBar>
+	<GridPane alignment="CENTER" hgap="10" vgap="10">
+		<Button GridPane.rowIndex="1" GridPane.columnIndex="1"
+			text="Creer le tournois" onAction="#creerTournois"></Button>
+		<TextField GridPane.rowIndex="2" GridPane.columnIndex="1"
+			promptText="Nom du tournois" fx:id="nomTournoisText"></TextField>
+		<TextField GridPane.rowIndex="2" GridPane.columnIndex="2"
+			promptText="Nombre d'equipes" fx:id="nbEquipeText"></TextField>
+		<Label GridPane.rowIndex="3" GridPane.columnIndex="1"
+			Text="Remplir tous les champs" visible="false" fx:id="confirmLabel"></Label>
+		<Label GridPane.rowIndex="3" GridPane.columnIndex="1"
+			Text="Vous devez indiquer un nombre" visible="false" fx:id="typeLabel"></Label>
+		<Label GridPane.rowIndex="3" GridPane.columnIndex="2"
+			Text="Il faut au moins 3 equipes pour faire un tournois" visible="false" fx:id="nbEquipeLabel"></Label>
+		<ComboBox GridPane.rowIndex="2" GridPane.columnIndex="3"
+			fx:id="typeTournoisCombo" promptText="Type de Tournois">
+			<items>
+				<FXCollections fx:factory="observableArrayList">
+					<String fx:value="Poules" />
+					<String fx:value="Elimination Directe" />
+				</FXCollections>
+			</items>
+		</ComboBox>
+	</GridPane>
+</VBox>

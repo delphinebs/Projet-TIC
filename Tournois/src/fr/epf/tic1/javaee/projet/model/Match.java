@@ -2,10 +2,15 @@ package fr.epf.tic1.javaee.projet.model;
 
 public class Match {
 
-	//private HashMap<Equipe, Integer> scores;//Attention!!! => verif pas deux equipes identiques (Execption si deux equipes identiques?)	
+	//Attention!!! => verif pas deux equipes identiques (Execption si deux equipes identiques?)	
 	private Equipe[] equipes;
 	private int[] scores;
 	private boolean joue;
+	
+	
+	/*Constructors*/
+	//
+	//
 	
 	public Match() {
 		equipes = new Equipe[2];
@@ -27,6 +32,11 @@ public class Match {
 		joue=false;
 	}
 
+	
+	/*Getter - Setter*/
+	//
+	//
+	
 	public Equipe[] getEquipes(){
 		return equipes;
 	}
@@ -54,6 +64,10 @@ public class Match {
 			joue=true;
 	}
 	
+	public boolean getJoue(){
+		return joue;
+	}
+	
 	@Override
 	public String toString() {
 		if(joue){
@@ -63,8 +77,6 @@ public class Match {
 		else return equipes[0]+" - "+equipes[1] + " (a jouer)";
 	}
 	
-	public boolean getJoue(){
-		return joue;
-	}
+	//scores[0]==-2 => isFake()
 
 }

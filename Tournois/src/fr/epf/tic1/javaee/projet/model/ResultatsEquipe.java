@@ -6,43 +6,23 @@ public class ResultatsEquipe implements Comparable<ResultatsEquipe>{
 	private int points;
 	private int differenceDeButs;
 	
+	
+	/*Constructors*/
+	//
+	//
+	
 	public ResultatsEquipe(Equipe equipe) {
 		this.equipe = equipe;
 		points=0;
 		differenceDeButs=0;
 	}
 	
-	@Override
-	public String toString() {
-		
-		String retour;
-		
-		retour = "Equipe "+equipe+": ";
-		retour += points+" Points";
-		retour += ", Difference: "+differenceDeButs;
-		return retour;
-	}
 
-	//Utiliser pour pouvoir sort() les resultats des equipes dan une poule
-	@Override
-	public int compareTo(ResultatsEquipe arg0) {
-		
-		//ou pas
-		//Probleme de type, pas execption existante: execption custom ou cast qui cre CastExecption
-		
-		/*if(!(arg0 instanceof ResultatsEquipe)) throw */
-		
-		
-		ResultatsEquipe resultats = (ResultatsEquipe) arg0;
-		
-		if(resultats.getPoints()>this.points) return -1;
-		else if(resultats.getPoints()<this.points) return 1;
-		else if(resultats.getDifferenceDeButs()>this.differenceDeButs) return -1;
-		else if(resultats.getDifferenceDeButs()<this.differenceDeButs) return 1;
-		else return 0;
-
-	}
-
+	
+	/*Getter - Setter*/
+	//
+	//
+	
 	public Equipe getEquipe() {
 		return equipe;
 	}
@@ -66,5 +46,31 @@ public class ResultatsEquipe implements Comparable<ResultatsEquipe>{
 	public void setDifferenceDeButs(int differenceDeButs) {
 		this.differenceDeButs = differenceDeButs;
 	}
+	
+
+	@Override
+	public String toString() {
+		
+		String retour;
+		
+		retour = "Equipe "+equipe+": ";
+		retour += points+" Points";
+		retour += ", Difference: "+differenceDeButs;
+		return retour;
+	}
+	
+	//Utiliser pour pouvoir sort() les resultats des equipes dan une poule
+	@Override
+	public int compareTo(ResultatsEquipe arg0) {
+		
+		ResultatsEquipe resultats = (ResultatsEquipe) arg0;
+		
+		if(resultats.getPoints()>this.points) return -1;
+		else if(resultats.getPoints()<this.points) return 1;
+		else if(resultats.getDifferenceDeButs()>this.differenceDeButs) return -1;
+		else if(resultats.getDifferenceDeButs()<this.differenceDeButs) return 1;
+		else return 0;
+
+	}	
 	
 }
