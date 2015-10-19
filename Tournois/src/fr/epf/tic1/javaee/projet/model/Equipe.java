@@ -6,7 +6,7 @@ import java.util.Collections;
 public class Equipe {
 
 	private String nom;
-	private int nbJoueur;
+	private int nbJoueur;// non used in the program, set at 0
 	private String description;
 
 	/* Constructors */

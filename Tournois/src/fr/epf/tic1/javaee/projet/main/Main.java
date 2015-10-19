@@ -27,7 +27,7 @@ public class Main {
 		switch(s){
 		case "J":
 		case "j":
-			JavaFXView.launch(JavaFXView.class, args);
+			//JavaFXView.launch(JavaFXView.class, args);
 			break;
 		case "C":
 		case "c":
