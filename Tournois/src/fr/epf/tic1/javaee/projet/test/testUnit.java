@@ -3,11 +3,14 @@ package fr.epf.tic1.javaee.projet.test;
 import static org.junit.Assert.*;
 
 import java.io.Console;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
+import fr.epf.tic1.javaee.projet.controller.TournoisDirectController;
 import fr.epf.tic1.javaee.projet.model.Equipe;
 import fr.epf.tic1.javaee.projet.model.Match;
+import fr.epf.tic1.javaee.projet.model.TournoisDirect;
 import fr.epf.tic1.javaee.projet.view.console.ConsoleView;
 
 public class testUnit {
@@ -45,23 +48,29 @@ public class testUnit {
 		assertEquals(equipe2.getNom(),"Team B");
 		assertEquals(equipe2.getDescription(),"from Tampere");
 	}
+	
+	
 	//to do test exception Namealready taken
 	
+		
+	//Match played, set score
+		
+	@Test
+	public void testMatchSetScore(){
+		Equipe equipe1=new Equipe();
+		Equipe equipe2=new Equipe();
+		
+		Match m= new Match(equipe1, equipe2);
+		m.setScore(2, 5);//team 2 win, match  played
+		assertEquals(2,m.getScore()[0]);
+		assertEquals(5,m.getScore()[1]);
+		assertEquals(m.getJoue(), true); //matched played when we set scores of the match
+		
+	}
 	
-	//Start tournament
 	
 	@Test
-	public void testStartDirectTournament() {
-		//direct tournament
-		
-		
-		ConsoleView console =new ConsoleView();
-		console.Launch();
-		console.
-		console.choixTournois()=2;//to do
-		}
-	@Test
-	public void testStartPoolTournament() {
+	public void testFinishedMatch() {
 		
 		//to do
 		}

@@ -114,7 +114,7 @@ public class TournoisDirectController implements ITournoisController {
 
 	// Utiliser le boolean pour savoir si le tournois est finis
 	public boolean finMatch(Match match, int score1,
-			int score2) {
+			int score2) {//return true f the match is finished
 		match.setScore(score1, score2);
 		if (finTour()) {
 			if (finDeTournois())
@@ -127,7 +127,7 @@ public class TournoisDirectController implements ITournoisController {
 	}
 
 	// Verif si le tournois est fini
-	private boolean finDeTournois() {
+	private boolean finDeTournois() {//return true if tournament s finished
 		if (tournois.getArbre().size() <= tournois.getTour() + 1)
 			return true;
 		return false;

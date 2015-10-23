@@ -35,7 +35,7 @@ public class TournoisDirect extends ATournois {
 	//
 	//
 	
-	public Equipe getGagnant(){
+	public Equipe getGagnant(){//fonction to find the winner test TODO
 		Match[] match = arbre.get(arbre.size()-1);
 		if(match[0].getScore()[0]>match[0].getScore()[1]){
 			return match[0].getEquipes()[0];
